@@ -1,0 +1,39 @@
+# Example terraform.tfvars file for SageMaker Model Deployment
+# Copy this file to terraform.tfvars and update the values
+
+# Model configuration
+model_name = "my-custom-model"
+endpoint_name = "my-custom-endpoint"
+endpoint_config_name = "my-custom-endpoint-config"
+
+# Model artifacts location in S3
+model_data_url = "s3://my-model-bucket/path/to/model.tar.gz"
+
+# Inference container image
+# Common options:
+# - PyTorch: 763104351884.dkr.ecr.us-east-1.amazonaws.com/pytorch-inference:1.12.1-cpu-py38
+# - TensorFlow: 763104351884.dkr.ecr.us-east-1.amazonaws.com/tensorflow-inference:2.8.0-cpu
+# - Scikit-learn: 246618743249.dkr.ecr.us-west-2.amazonaws.com/sagemaker-scikit-learn:0.23-1-cpu-py3
+inference_image = "763104351884.dkr.ecr.us-east-1.amazonaws.com/pytorch-inference:1.12.1-cpu-py38"
+
+# Instance configuration
+instance_type = "ml.t3.medium"  # Options: ml.t3.medium, ml.m5.large, ml.c5.large, etc.
+initial_instance_count = 1
+
+# Environment variables for the model container
+environment = {
+  SAGEMAKER_PROGRAM           = "inference.py"
+  SAGEMAKER_SUBMIT_DIRECTORY  = "/opt/ml/model"
+  SAGEMAKER_CONTAINER_LOG_LEVEL = "20"
+  # Add any custom environment variables your model needs
+  # MODEL_VERSION = "v1.0"
+  # THRESHOLD = "0.5"
+}
+
+# Tags for all resources
+tags = {
+  Environment = "production"
+  Project     = "ml-deployment"
+  Team        = "data-science"
+  Owner       = "your-name"
+} 
